@@ -4,12 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Request Accelerometer Permission</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    body {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+    #x {
+      position: absolute;
+      top: 50%;
+      left: -5px;
+      transform: rotate(-90deg);
+    }
+    #y {
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      transform: translateX(-50%);
+    }
+    #x, #y {
+      font-size: 11px;
+      color: #888;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    #play_button {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      z-index: 2;
+      background-color: #223;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #play_button button {
+      padding: 15px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      background-color: #efc06e;
+      color: #4e25e3;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<p id="x"></p>
-<p id="y"></p>
-<p id="z"></p>
-<button onclick="requestAccelerometerPermission()">Запросить разрешение на использование акселерометра</button>
+<p id="x">012312</p>
+<p id="y">0123123</p>
+<div id="play_button">
+  <button onclick="requestAccelerometerPermission()" >Play</button>
+</div>
 
 <script>
   function requestAccelerometerPermission() {
@@ -17,6 +69,7 @@
       DeviceMotionEvent.requestPermission()
               .then(permissionState => {
                 if (permissionState === 'granted') {
+                  document.getElementById('play_button').remove();
                   startListeningToAccelerometer();
                 } else {
                   console.error('Разрешение на использование акселерометра не было предоставлено.');
@@ -35,12 +88,11 @@
   }
   const x = document.getElementById('x');
   const y = document.getElementById('y');
-  const z = document.getElementById('z');
   
   function handleDeviceMotion(event) {
-    x.innerText = 'Alpha is '+event.alpha.toFixed(2);
-    y.innerText = 'Beta is '+event.beta.toFixed(2);
-    z.innerText = 'Gamma is '+event.gamma.toFixed(2);
+    const x = event.beta.toFixed(1);
+    const y = event.gamma.toFixed(1);
+    
   }
 </script>
 
