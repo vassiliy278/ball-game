@@ -14,6 +14,7 @@
       position: relative;
       width: 100%;
       height: 100vh;
+      background-color: #eee;
     }
     #x {
       position: absolute;
@@ -54,6 +55,18 @@
       letter-spacing: 1px;
       cursor: pointer;
     }
+    #ball {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #df9ef6;
+      border: 1px solid grey;
+      
+    }
   </style>
 </head>
 <body>
@@ -62,7 +75,7 @@
 <div id="play_button">
   <button onclick="requestAccelerometerPermission()" >Play</button>
 </div>
-
+<div id="ball"></div>
 <script>
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -79,6 +92,7 @@
                 console.error('Ошибка запроса разрешения на использование акселерометра:', error);
               });
     } else {
+      document.getElementById('play_button').remove();
       console.error('Браузер не поддерживает API запроса разрешения на использование акселерометра.');
     }
   }
@@ -86,13 +100,24 @@
   function startListeningToAccelerometer() {
     window.addEventListener('deviceorientation', handleDeviceMotion);
   }
+  const ball = document.getElementById('ball');
+  const ballStartPositionX = ball.offsetLeft;
+  const ballStartPositionY = ball.offsetTop;
+  
   const x = document.getElementById('x');
   const y = document.getElementById('y');
   
+  const xFieldLength = window.innerWidth;
+  const yFieldLength = window.innerHeight;
+
   function handleDeviceMotion(event) {
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
     
+    if(ball.offsetLeft > 0 && ball.offsetLeft < xFieldLength && ball.offsetTop > 0 && ball.offsetTop < yFieldLength) {
+      ball.style.left = ball.offsetLeft + event.beta.toFixed(1);
+      ball.style.top = ball.offsetTop + event.gamma.toFixed(1);
+    }
   }
 </script>
 
