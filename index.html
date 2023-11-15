@@ -111,10 +111,11 @@
   let ballLeft = 50;
   let ballTop = 50;
   let speed = 3;
-  
+  let timeInsideHole = 0;
+
   document.addEventListener('click', () => {
-    speed = speed*1.1
-  })
+    speed = speed * 1.1;
+  });
 
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -148,19 +149,22 @@
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
 
-    ballLeft += event.gamma / speed; // Измените значение 3 на ваше усмотрение для настройки скорости
-    ballTop += event.beta / speed;
-
     // Проверка на выход за границы экрана
-    ballLeft = Math.max(0, Math.min(100, ballLeft));
-    ballTop = Math.max(0, Math.min(100, ballTop));
+    ballLeft = Math.max(0, Math.min(100, ballLeft + event.gamma / speed));
+    ballTop = Math.max(0, Math.min(100, ballTop + event.beta / speed));
 
-    // Проверка, находится ли шарик внутри лунки
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
-      // Шарик внутри лунки, можно добавить логику победы
-      document.getElementById('win').classList.remove('display-zero')
+      // Если шарик внутри лунки, увеличиваем время на 1 секунду
+      timeInsideHole += 1;
+      if (timeInsideHole >= 2) {
+        // Если время внутри лунки больше 2 секунд, отображаем сообщение о победе
+        document.getElementById('win').classList.remove('display-zero');
+      }
+    } else {
+      // Если шарик не внутри лунки, сбрасываем время
+      timeInsideHole = 0;
     }
 
     // Установка новых координат для шара
@@ -178,7 +182,6 @@
     cancelAnimationFrame(animationId);
   });
 
-  // Функция для проверки, находится ли точка (x, y) внутри окружности с центром (cx, cy) и радиусом r
   function isInside(point, circle) {
     const x = parseFloat(point.style.left) + point.offsetWidth / 2;
     const y = parseFloat(point.style.top) + point.offsetHeight / 2;
