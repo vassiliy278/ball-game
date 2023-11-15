@@ -173,7 +173,7 @@
 
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
-    if (isInside()) {
+    if (isInside(ball, hole)) {
       document.getElementById('win').classList.remove('display-zero');
     } else {
     }
@@ -197,6 +197,9 @@
     const ballRect = ball.getBoundingClientRect();
     const holeRect = hole.getBoundingClientRect();
 
+    document.getElementById('hole-info').innerText = `Hole: left-${ballRect.left}; top-${ballRect.top}; right-${ballRect.right}; bottom-${ballRect.bottom}`
+    document.getElementById('ball-info').innerText = `Ball: left-${holeRect.left}; top-${holeRect.top}; right-${holeRect.right}; bottom-${holeRect.bottom}`
+    
     return (
             ballRect.left >= holeRect.left &&
             ballRect.top >= holeRect.top &&
