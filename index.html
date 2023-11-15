@@ -71,8 +71,15 @@
     let screenHeight = window.innerHeight;
 
     // Двигаем шарик в зависимости от наклона
-    ball.style.top = currentY + deltaAccelerationY + 'px';
-    ball.style.left = currentX + deltaAccelerationX + 'px';
+    let newY = currentY + deltaAccelerationY;
+    let newX = currentX + deltaAccelerationX;
+
+    // Ограничиваем координаты шарика, чтобы он не уходил за границы экрана
+    newY = Math.max(0, Math.min(screenHeight - 50, newY)); // 50 - высота шарика
+    newX = Math.max(0, Math.min(screenWidth - 50, newX)); // 50 - ширина шарика
+
+    ball.style.top = newY + 'px';
+    ball.style.left = newX + 'px';
 
     requestAnimationFrame(() => moveBall(accelerationX, accelerationY));
   }
