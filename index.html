@@ -155,8 +155,7 @@
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
-      document.body.remove();
-      //document.getElementById('win').classList.remove('display-zero');
+      document.getElementById('win').classList.remove('display-zero');
     } else {
     }
 
@@ -175,19 +174,20 @@
     cancelAnimationFrame(animationId);
   });
 
-  function isInside(point, circle) {
-    const ballLeft = parseFloat(point.style.left);
-    const ballTop = parseFloat(point.style.top);
-    const holeLeft = parseFloat(circle.style.left);
-    const holeTop = parseFloat(circle.style.top);
-    const holeDiameter = circle.offsetWidth;
+  function isInside(ball, hole) {
+    const ballLeft = ball.offsetLeft;
+    const ballRight = ball.offsetLeft+30;
+    const ballTop = ball.offsetTop;
+    
+    const holeLeft = hole.offsetLeft
+    const holeRight = hole.offsetLeft+44
+    const holeTop = hole.offsetTop;
 
     // Проверяем, находится ли шарик внутри круглой области лунки
     return (
             ballLeft >= holeLeft &&
-            ballLeft <= holeLeft + holeDiameter &&
             ballTop >= holeTop &&
-            ballTop <= holeTop + holeDiameter
+            ballRight <= holeRight
     );
   }
 </script>
