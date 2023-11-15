@@ -155,15 +155,8 @@
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
-      // Если шарик внутри границ лунки, увеличиваем время на 1 секунду
-      timeInsideHole += 1;
-      if (timeInsideHole >= 2) {
-        // Если время внутри лунки больше 2 секунд, отображаем сообщение о победе
-        document.getElementById('win').classList.remove('display-zero');
-      }
+      document.getElementById('win').classList.remove('display-zero');
     } else {
-      // Если шарик не внутри границ лунки, сбрасываем время
-      timeInsideHole = 0;
     }
 
     // Установка новых координат для шара
@@ -182,14 +175,19 @@
   });
 
   function isInside(point, circle) {
-    const x = parseFloat(point.style.left) + point.offsetWidth / 2;
-    const y = parseFloat(point.style.top) + point.offsetHeight / 2;
-    const cx = parseFloat(circle.style.left) + circle.offsetWidth / 2;
-    const cy = parseFloat(circle.style.top) + circle.offsetHeight / 2;
-    const r = circle.offsetWidth / 2;
+    const ballLeft = parseFloat(point.style.left);
+    const ballTop = parseFloat(point.style.top);
+    const holeLeft = parseFloat(circle.style.left);
+    const holeTop = parseFloat(circle.style.top);
+    const holeDiameter = circle.offsetWidth;
 
-    // Проверяем, находится ли центр шара внутри круглой области лунки
-    return Math.sqrt((x - cx) ** 2 + (y - cy) ** 2) < r;
+    // Проверяем, находится ли шарик внутри круглой области лунки
+    return (
+            ballLeft >= holeLeft &&
+            ballLeft <= holeLeft + holeDiameter &&
+            ballTop >= holeTop &&
+            ballTop <= holeTop + holeDiameter
+    );
   }
 </script>
 </body>
