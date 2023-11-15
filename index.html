@@ -5,7 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Request Accelerometer Permission</title>
   <style>
-    /* ваш стиль остается без изменений */
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    body {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background-color: #eee;
+    }
+    #x {
+      position: absolute;
+      top: 50%;
+      left: -5px;
+      transform: rotate(-90deg);
+    }
+    #y {
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      transform: translateX(-50%);
+    }
+    #x, #y {
+      font-size: 11px;
+      color: #888;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    #play_button {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      z-index: 2;
+      background-color: #223;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #play_button button {
+      padding: 15px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      background-color: #efc06e;
+      color: #4e25e3;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    #ball {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #df9ef6;
+      border: 1px solid grey;
+
+    }
   </style>
 </head>
 <body>
