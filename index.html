@@ -109,8 +109,8 @@
     const xFieldLength = window.innerWidth;
     const yFieldLength = window.innerHeight;
 
-    x.innerText = event.beta.toFixed(1)+';field X:'+xFieldLength;
-    y.innerText = event.gamma.toFixed(1)+';field Y:'+yFieldLength;
+    x.innerText = event.beta.toFixed(1)+' ;field X:'+xFieldLength+' ;offsetLeft:'+ball.offsetLeft;
+    y.innerText = event.gamma.toFixed(1)+' ;field Y:'+yFieldLength+' ;offsetTop:'+ball.offsetTop;
 
     if(ball.offsetLeft > 0 && (ball.offsetLeft + event.beta.toFixed(1)) <= xFieldLength) {
       ball.style.left = ball.offsetLeft + event.beta.toFixed(1)+'px';
