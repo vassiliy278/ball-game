@@ -65,6 +65,16 @@
       border-radius: 50%;
       background-color: #df9ef6;
       border: 1px solid grey;
+      transition: left 0.5s ease, top 0.5s ease;
+    }
+    #hole {
+      position: absolute;
+      left: 30%;
+      top: 30%;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: #000;
     }
   </style>
 </head>
@@ -74,15 +84,18 @@
 <div id="play_button">
   <button onclick="requestAccelerometerPermission()">Play</button>
 </div>
+<div id="hole"></div>
 <div id="ball"></div>
 <script>
   let animationId;
   let ballLeft = 50;
   let ballTop = 50;
   let speed = 3;
+  
   document.addEventListener('click', () => {
     speed = speed*1.1
   })
+
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
       DeviceMotionEvent.requestPermission()
@@ -115,16 +128,24 @@
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
 
-    ballLeft += event.gamma / speed; // Измените значение 3 на ваше усмотрение для настройки скорости
-    ballTop += event.beta / speed;
+    ballLeft += event.beta / 3; // Измените значение 3 на ваше усмотрение для настройки скорости
+    ballTop += event.gamma / 3;
 
     // Проверка на выход за границы экрана
     ballLeft = Math.max(0, Math.min(100, ballLeft));
     ballTop = Math.max(0, Math.min(100, ballTop));
 
+    // Проверка, находится ли шарик внутри лунки
+    const ball = document.getElementById('ball');
+    const hole = document.getElementById('hole');
+    if (isInside(ball, hole)) {
+      // Шарик внутри лунки, можно добавить логику победы
+      alert('Победа!');
+    }
+
     // Установка новых координат для шара
-    document.getElementById('ball').style.left = `${ballLeft}%`;
-    document.getElementById('ball').style.top = `${ballTop}%`;
+    ball.style.left = `${ballLeft}%`;
+    ball.style.top = `${ballTop}%`;
   }
 
   function animate() {
@@ -136,6 +157,17 @@
   window.addEventListener('resize', () => {
     cancelAnimationFrame(animationId);
   });
+
+  // Функция для проверки, находится ли точка (x, y) внутри окружности с центром (cx, cy) и радиусом r
+  function isInside(point, circle) {
+    const x = parseFloat(point.style.left) + point.offsetWidth / 2;
+    const y = parseFloat(point.style.top) + point.offsetHeight / 2;
+    const cx = parseFloat(circle.style.left) + circle.offsetWidth / 2;
+    const cy = parseFloat(circle.style.top) + circle.offsetHeight / 2;
+    const r = circle.offsetWidth / 2;
+
+    return Math.sqrt((x - cx) ** 2 + (y - cy) ** 2) < r;
+  }
 </script>
 </body>
 </html>
