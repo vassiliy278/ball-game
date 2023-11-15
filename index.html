@@ -1,49 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-
-        #square {
-            width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            background-color: red;
-            position: absolute;
-            transition: transform 0.1s ease-out; /* Добавляем CSS-переход для плавности */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #square {
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
 </head>
 <body>
+  <div id="square"></div>
 
-<div id="square"></div>
-
-<script>
-    let squareX = window.innerWidth / 2 - 10;
-    let squareY = window.innerHeight / 2 - 10;
+  <script>
+    const square = document.getElementById('square');
 
     window.addEventListener('deviceorientation', handleOrientation);
 
     function handleOrientation(event) {
-        const alpha = event.alpha;
-        const beta = event.beta;
-        const gamma = event.gamma;
+      const x = event.beta; // угол от -180 до 180, наклон по вертикали
+      const y = event.gamma; // угол от -90 до 90, наклон по горизонтали
 
-        // Изменяем положение квадрата плавно
-        requestAnimationFrame(() => {
-            squareX += gamma * 0.1; // Множитель для скорости перемещения
-            squareY += beta * 0.1;
-
-            const square = document.getElementById('square');
-            square.style.transform = `translate(${squareX}px, ${squareY}px)`;
-        });
+      // Меняем положение квадрата в зависимости от наклона устройства
+      square.style.top = (y + 90) + 'px';
+      square.style.left = (x + 90) + 'px';
     }
-</script>
-
+  </script>
 </body>
 </html>
