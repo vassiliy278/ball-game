@@ -65,15 +65,15 @@
       border-radius: 50%;
       background-color: #df9ef6;
       border: 1px solid grey;
-
+      transition: left 0.5s ease, top 0.5s ease;
     }
   </style>
 </head>
 <body>
-<p id="x">012312</p>
-<p id="y">0123123</p>
+<p id="x">0</p>
+<p id="y">0</p>
 <div id="play_button">
-  <button onclick="requestAccelerometerPermission()" >Play</button>
+  <button onclick="requestAccelerometerPermission()">Play</button>
 </div>
 <div id="ball"></div>
 <script>
@@ -96,36 +96,28 @@
       console.error('Браузер не поддерживает API запроса разрешения на использование акселерометра.');
     }
   }
-  
-  let interval;
-  
+
   function startListeningToAccelerometer() {
-    window.addEventListener('deviceorientation', () => {
-      if(interval) {
-        return
-      }
-      interval = setInterval(() => handleDeviceMotion(), 300)
-    });
+    window.addEventListener('deviceorientation', handleDeviceMotion);
   }
-  const ball = document.getElementById('ball');
-
-  const x = document.getElementById('x');
-  const y = document.getElementById('y');
-
-  const xFieldLength = window.innerWidth;
-  const yFieldLength = window.innerHeight;
 
   function handleDeviceMotion(event) {
-    clearInterval(interval);
+    const x = document.getElementById('x');
+    const y = document.getElementById('y');
+    const ball = document.getElementById('ball');
+
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
 
-    if(ball.offsetLeft > 0 && ball.offsetLeft < xFieldLength && ball.offsetTop > 0 && ball.offsetTop < yFieldLength) {
-      ball.style.left = ball.offsetLeft + event.beta.toFixed(1)+'px';
-      ball.style.top = ball.offsetTop + event.gamma.toFixed(1)+'px';
-    }
+    const xFieldLength = window.innerWidth;
+    const yFieldLength = window.innerHeight;
+
+    const newX = (event.gamma / 90) * xFieldLength;
+    const newY = (event.beta / 90) * yFieldLength;
+
+    ball.style.left = Math.min(xFieldLength - 30, Math.max(0, newX)) + 'px';
+    ball.style.top = Math.min(yFieldLength - 30, Math.max(0, newY)) + 'px';
   }
 </script>
-
 </body>
 </html>
