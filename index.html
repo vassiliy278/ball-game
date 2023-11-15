@@ -31,14 +31,14 @@
   }
 
   function startListeningToAccelerometer() {
-    window.addEventListener('devicemotion', handleDeviceMotion);
+    window.addEventListener('deviceorientation', handleDeviceMotion);
   }
   const x = document.getElementById('x');
   const y = document.getElementById('y');
   const z = document.getElementById('z');
   
   function handleDeviceMotion(event) {
-    x.innerText = 'Alpha is '+event.alpha.toFixed(2);
+    x.innerText = 'Alpha is '+event.alpha
     y.innerText = 'Beta is '+event.beta.toFixed(2);
     z.innerText = 'Gamma is '+event.gamma.toFixed(2);
   }
