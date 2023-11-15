@@ -75,11 +75,32 @@
       border-radius: 50%;
       background-color: #000;
     }
+    #win {
+      width: 100%;
+      height: 100vh;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 2;
+      background-color: #555;
+      color: #ccc;
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .display-zero {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
 <p id="x">0</p>
 <p id="y">0</p>
+<p id="win" class="display-zero">Mission accomplished!</p>
 <div id="play_button">
   <button onclick="requestAccelerometerPermission()">Play</button>
 </div>
@@ -139,7 +160,7 @@
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
       // Шарик внутри лунки, можно добавить логику победы
-      alert('Победа!');
+      document.getElementById('win').classList.remove('display-zero')
     }
 
     // Установка новых координат для шара
