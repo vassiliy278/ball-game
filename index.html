@@ -3,104 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Request Accelerometer Permission</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-    }
-    body {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      background-color: #eee;
-    }
-    #x {
-      position: absolute;
-      top: 50%;
-      left: -5px;
-      transform: rotate(-90deg);
-    }
-    #y {
-      position: absolute;
-      left: 50%;
-      top: 10px;
-      transform: translateX(-50%);
-    }
-    #x, #y {
-      font-size: 11px;
-      color: #888;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    #play_button {
-      width: 100%;
-      height: 100vh;
-      position: relative;
-      z-index: 2;
-      background-color: #223;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #play_button button {
-      padding: 15px 28px;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      background-color: #efc06e;
-      color: #4e25e3;
-      font-weight: 700;
-      letter-spacing: 1px;
-      cursor: pointer;
-    }
-    #ball {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background-color: #df9ef6;
-      border: 1px solid grey;
-    }
-    #hole {
-      position: absolute;
-      left: 30%;
-      top: 30%;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background-color: #000;
-    }
-    #win {
-      width: 100%;
-      height: 100vh;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      z-index: 2;
-      background-color: #555;
-      color: #ccc;
-      font-size: 42px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .display-zero {
-      display: none !important;
-    }
-  </style>
+  <title>Request Accelerometer Permission</title>  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  body {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: #eee;
+  }
+  #x {
+    position: absolute;
+    top: 50%;
+    left: -5px;
+    transform: rotate(-90deg);
+  }
+  #y {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+  }
+  #x, #y {
+    font-size: 11px;
+    color: #888;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  #play_button {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+    background-color: #223;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #play_button button {
+    padding: 15px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    background-color: #efc06e;
+    color: #4e25e3;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  #ball {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #df9ef6;
+    border: 1px solid grey;
+  }
+  #hole {
+    position: absolute;
+    left: 30%;
+    top: 30%;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #000;
+  }
+  #win {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 2;
+    background-color: #555;
+    color: #ccc;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .display-zero {
+    display: none !important;
+  }
+</style>
 </head>
 <body>
 <p id="x">0</p>
 <p id="y">0</p>
-<p id="win" class="display-zero">Mission accomplished!</p>
+<p id="win" class="display-zero">You win!</p>
 <div id="play_button">
   <button onclick="requestAccelerometerPermission()">Play</button>
 </div>
@@ -138,7 +137,7 @@
   }
 
   function startListeningToAccelerometer() {
-    window.addEventListener('deviceorientation', handleDeviceMotion);
+    window.addEventListener('devicemotion', handleDeviceMotion);
     animate();
   }
 
@@ -146,12 +145,12 @@
     const x = document.getElementById('x');
     const y = document.getElementById('y');
 
-    x.innerText = event.beta.toFixed(1);
-    y.innerText = event.gamma.toFixed(1);
+    x.innerText = event.accelerationIncludingGravity.x.toFixed(1);
+    y.innerText = event.accelerationIncludingGravity.y.toFixed(1);
 
     // Проверка на выход за границы экрана
-    ballLeft = Math.max(0, Math.min(100, ballLeft + event.gamma / speed));
-    ballTop = Math.max(0, Math.min(100, ballTop + event.beta / speed));
+    ballLeft = Math.max(0, Math.min(100, ballLeft + event.accelerationIncludingGravity.x / speed));
+    ballTop = Math.max(0, Math.min(100, ballTop - event.accelerationIncludingGravity.y / speed));
 
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
