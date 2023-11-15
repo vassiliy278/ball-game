@@ -178,16 +178,19 @@
     const ballLeft = ball.offsetLeft;
     const ballRight = ball.offsetLeft+30;
     const ballTop = ball.offsetTop;
+    const ballBottom = ball.offsetTop+30
     
     const holeLeft = hole.offsetLeft
     const holeRight = hole.offsetLeft+44
     const holeTop = hole.offsetTop;
+    const holeBottom = hole.offsetTop+44
 
     // Проверяем, находится ли шарик внутри круглой области лунки
     return (
             ballLeft >= holeLeft &&
             ballTop >= holeTop &&
-            ballRight <= holeRight
+            ballRight <= holeRight &&
+            ballBottom <= holeBottom
     );
   }
 </script>
