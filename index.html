@@ -109,14 +109,18 @@
   
   const xFieldLength = window.innerWidth;
   const yFieldLength = window.innerHeight;
+  
+  console.log('ball.offsetLeft:',ball.offsetLeft,'xFieldLength:',xFieldLength);
+  console.log('ball.offsetTop:',ball.offsetTop,'yFieldLength:',yFieldLength)
+  console.log(ball.offsetLeft > 0 && ball.offsetLeft < xFieldLength && ball.offsetTop > 0 && ball.offsetTop < yFieldLength)
 
   function handleDeviceMotion(event) {
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
     
     if(ball.offsetLeft > 0 && ball.offsetLeft < xFieldLength && ball.offsetTop > 0 && ball.offsetTop < yFieldLength) {
-      ball.style.left = ball.offsetLeft + event.beta.toFixed(1);
-      ball.style.top = ball.offsetTop + event.gamma.toFixed(1);
+      ball.style.left = ball.offsetLeft + event.beta.toFixed(1)+'px';
+      ball.style.top = ball.offsetTop + event.gamma.toFixed(1)+'px';
     }
   }
 </script>
