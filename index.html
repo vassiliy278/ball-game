@@ -38,9 +38,9 @@
   const z = document.getElementById('z');
   
   function handleDeviceMotion(event) {
-    x.innerText = 'X is '+event.acceleration.x;
-    y.innerText = 'Y is '+event.acceleration.y;
-    z.innerText = 'Z is '+event.acceleration.z;
+    x.innerText = 'Alpha is '+event.alpha.toFixed(2);
+    y.innerText = 'Beta is '+event.beta.toFixed(2);
+    z.innerText = 'Gamma is '+event.gamma.toFixed(2);
   }
 </script>
 
