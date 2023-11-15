@@ -59,13 +59,12 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
       width: 30px;
       height: 30px;
       border-radius: 50%;
       background-color: #df9ef6;
       border: 1px solid grey;
-      transition: left 0.5s ease, top 0.5s ease;
     }
   </style>
 </head>
@@ -77,6 +76,10 @@
 </div>
 <div id="ball"></div>
 <script>
+  let animationId;
+  let ballLeft = 50;
+  let ballTop = 50;
+
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
       DeviceMotionEvent.requestPermission()
@@ -99,26 +102,37 @@
 
   function startListeningToAccelerometer() {
     window.addEventListener('deviceorientation', handleDeviceMotion);
+    animate();
   }
 
   function handleDeviceMotion(event) {
     const x = document.getElementById('x');
     const y = document.getElementById('y');
-    const ball = document.getElementById('ball');
 
-    const xFieldLength = window.innerWidth;
-    const yFieldLength = window.innerHeight;
+    x.innerText = event.beta.toFixed(1);
+    y.innerText = event.gamma.toFixed(1);
 
-    x.innerText = event.beta.toFixed(1)+' ;field X:'+xFieldLength+' ;offsetLeft:'+ball.offsetLeft;
-    y.innerText = event.gamma.toFixed(1)+' ;field Y:'+yFieldLength+' ;offsetTop:'+ball.offsetTop;
+    ballLeft += event.beta / 3; // Измените значение 3 на ваше усмотрение для настройки скорости
+    ballTop += event.gamma / 3;
 
-    if(ball.offsetLeft > 0 && (ball.offsetLeft + event.beta.toFixed(1)) <= xFieldLength) {
-      ball.style.left = ball.offsetLeft + event.beta.toFixed(1)+'px';
-    }
-    if(ball.offsetTop > 0 && (ball.offsetTop + event.gamma.toFixed(1)) <= yFieldLength) {
-      ball.style.top = ball.offsetTop + event.gamma.toFixed(1)+'px';
-    }
+    // Проверка на выход за границы экрана
+    ballLeft = Math.max(0, Math.min(100, ballLeft));
+    ballTop = Math.max(0, Math.min(100, ballTop));
+
+    // Установка новых координат для шара
+    document.getElementById('ball').style.left = `${ballLeft}%`;
+    document.getElementById('ball').style.top = `${ballTop}%`;
   }
+
+  function animate() {
+    animationId = requestAnimationFrame(animate);
+    // ваш код анимации, если необходимо
+  }
+
+  // Добавим обработчик события, чтобы остановить анимацию при изменении размера окна
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(animationId);
+  });
 </script>
 </body>
 </html>
