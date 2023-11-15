@@ -106,11 +106,11 @@
     const y = document.getElementById('y');
     const ball = document.getElementById('ball');
 
-    x.innerText = event.beta.toFixed(1);
-    y.innerText = event.gamma.toFixed(1);
-
     const xFieldLength = window.innerWidth;
     const yFieldLength = window.innerHeight;
+
+    x.innerText = event.beta.toFixed(1)+';field X:'+xFieldLength;
+    y.innerText = event.gamma.toFixed(1)+';field Y:'+yFieldLength;
 
     if(ball.offsetLeft > 0 && (ball.offsetLeft + event.beta.toFixed(1)) <= xFieldLength) {
       ball.style.left = ball.offsetLeft + event.beta.toFixed(1)+'px';
