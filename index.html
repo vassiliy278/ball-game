@@ -128,8 +128,8 @@
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
 
-    ballLeft += event.beta / 3; // Измените значение 3 на ваше усмотрение для настройки скорости
-    ballTop += event.gamma / 3;
+    ballLeft += event.gamma / 3; // Измените значение 3 на ваше усмотрение для настройки скорости
+    ballTop += event.beta / 3;
 
     // Проверка на выход за границы экрана
     ballLeft = Math.max(0, Math.min(100, ballLeft));
