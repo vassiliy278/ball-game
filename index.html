@@ -155,7 +155,8 @@
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
-      document.getElementById('win').classList.remove('display-zero');
+      document.body.remove();
+      //document.getElementById('win').classList.remove('display-zero');
     } else {
     }
 
