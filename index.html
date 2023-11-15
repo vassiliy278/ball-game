@@ -5,75 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Request Accelerometer Permission</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-    }
-    body {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      background-color: #eee;
-    }
-    #x {
-      position: absolute;
-      top: 50%;
-      left: -5px;
-      transform: rotate(-90deg);
-    }
-    #y {
-      position: absolute;
-      left: 50%;
-      top: 10px;
-      transform: translateX(-50%);
-    }
-    #x, #y {
-      font-size: 11px;
-      color: #888;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    #play_button {
-      width: 100%;
-      height: 100vh;
-      position: relative;
-      z-index: 2;
-      background-color: #223;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #play_button button {
-      padding: 15px 28px;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      background-color: #efc06e;
-      color: #4e25e3;
-      font-weight: 700;
-      letter-spacing: 1px;
-      cursor: pointer;
-    }
-    #ball {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background-color: #df9ef6;
-      border: 1px solid grey;
-      
-    }
+    /* ваш стиль остается без изменений */
   </style>
 </head>
 <body>
-<p id="x">012312</p>
-<p id="y">0123123</p>
+<p id="x">0</p>
+<p id="y">0</p>
 <div id="play_button">
-  <button onclick="requestAccelerometerPermission()" >Play</button>
+  <button onclick="requestAccelerometerPermission()">Play</button>
 </div>
 <div id="ball"></div>
 <script>
@@ -100,30 +39,26 @@
   function startListeningToAccelerometer() {
     window.addEventListener('deviceorientation', handleDeviceMotion);
   }
-  const ball = document.getElementById('ball');
-  const ballStartPositionX = ball.offsetLeft;
-  const ballStartPositionY = ball.offsetTop;
-  
-  const x = document.getElementById('x');
-  const y = document.getElementById('y');
-  
-  const xFieldLength = window.innerWidth;
-  const yFieldLength = window.innerHeight;
-  
-  console.log('ball.offsetLeft:',ball.offsetLeft,'xFieldLength:',xFieldLength);
-  console.log('ball.offsetTop:',ball.offsetTop,'yFieldLength:',yFieldLength)
-  console.log(ball.offsetLeft > 0 && ball.offsetLeft < xFieldLength && ball.offsetTop > 0 && ball.offsetTop < yFieldLength)
 
   function handleDeviceMotion(event) {
+    const x = document.getElementById('x');
+    const y = document.getElementById('y');
+    const ball = document.getElementById('ball');
+
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
-    
-    if(ball.offsetLeft > 0 && ball.offsetLeft < xFieldLength && ball.offsetTop > 0 && ball.offsetTop < yFieldLength) {
-      ball.style.left = ball.offsetLeft + event.beta.toFixed(1)+'px';
-      ball.style.top = ball.offsetTop + event.gamma.toFixed(1)+'px';
-    }
+
+    const xFieldLength = window.innerWidth;
+    const yFieldLength = window.innerHeight;
+
+    // Пересчитываем координаты шарика в зависимости от углов наклона
+    const newX = (event.gamma / 90) * xFieldLength;
+    const newY = (event.beta / 90) * yFieldLength;
+
+    // Ограничиваем координаты шарика, чтобы он не уходил за границы экрана
+    ball.style.left = Math.min(xFieldLength - 30, Math.max(0, newX)) + 'px';
+    ball.style.top = Math.min(yFieldLength - 30, Math.max(0, newY)) + 'px';
   }
 </script>
-
 </body>
 </html>
