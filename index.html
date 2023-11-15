@@ -129,7 +129,7 @@
   let ballLeft = 50;
   let ballTop = 50;
   let speed = 3;
-  let timeInsideHole = 0;
+  let winTimeout;
 
   document.addEventListener('click', () => {
     speed = speed * 1.1;
@@ -174,8 +174,11 @@
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
-      document.getElementById('win').classList.remove('display-zero');
+      winTimeout = setTimeout(() => {
+        document.getElementById('win').classList.remove('display-zero');
+      }, 2000)
     } else {
+      clearTimeout(winTimeout);
     }
 
     // Установка новых координат для шара
@@ -196,9 +199,6 @@
   function isInside(ball, hole) {
     const ballRect = ball.getBoundingClientRect();
     const holeRect = hole.getBoundingClientRect();
-
-    document.getElementById('hole-info').innerText = `Hole: left-${ballRect.left}; top-${ballRect.top}; right-${ballRect.right}; bottom-${ballRect.bottom}`
-    document.getElementById('ball-info').innerText = `Ball: left-${holeRect.left}; top-${holeRect.top}; right-${holeRect.right}; bottom-${holeRect.bottom}`
     
     return (
             ballRect.left >= holeRect.left &&
