@@ -112,7 +112,7 @@
     const xFieldLength = window.innerWidth;
     const yFieldLength = window.innerHeight;
 
-    if(ball.offsetLeft > 0 && ball.offsetLeft < xFieldLength && ball.offsetTop > 0 && ball.offsetTop < yFieldLength) {
+    if(ball.offsetLeft > 0 && ball.offsetLeft <= xFieldLength && ball.offsetTop > 0 && ball.offsetTop <= yFieldLength) {
       ball.style.left = ball.offsetLeft + event.beta.toFixed(1)+'px';
       ball.style.top = ball.offsetTop + event.gamma.toFixed(1)+'px';
     }
