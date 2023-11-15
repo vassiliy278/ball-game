@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accelerometer-controlled Square</title>
+  <title>Accelerometer-controlled Ball</title>
   <style>
-    #square {
+    #ball {
       position: absolute;
       width: 50px;
       height: 50px;
-      border-radius: 25px;
-      background-color: blue;
+      background-color: red;
+      border-radius: 50%;
     }
 
     #startButton {
@@ -21,14 +21,14 @@
 </head>
 <body>
 
-<div id="square"></div>
+<div id="ball"></div>
 <button id="startButton">Начать</button>
 
 <script>
-  let square = document.getElementById('square');
+  let ball = document.getElementById('ball');
   let animationFrameId;
   let accelerationX = 0;
-  let speed = 2; // Увеличим скорость для более быстрого движения
+  let speedMultiplier = 10; // Коэффициент ускорения
 
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -54,37 +54,31 @@
 
   function handleDeviceMotion(event) {
     // Получаем ускорение
-    accelerationX = event.acceleration.x;
+    accelerationX = event.accelerationIncludingGravity.x;
   }
 
-  function moveSquare() {
-    // Изменяем положение прямоугольника в зависимости от ускорения
-    let deltaX = accelerationX * speed;
+  function moveBall() {
+    // Изменяем положение шара в зависимости от ускорения
+    let deltaAcceleration = Math.abs(accelerationX);
+
+    // Вычисляем скорость падения в зависимости от угла наклона
+    let speed = deltaAcceleration * speedMultiplier;
 
     // Получаем текущее положение
-    let currentX = parseFloat(square.style.left) || 0;
-
-    // Определяем направление наклона
-    let direction = deltaX > 0 ? 1 : -1;
+    let currentY = parseFloat(ball.style.top) || 0;
 
     // Устанавливаем новое положение
-    square.style.left = currentX + deltaX + 'px';
+    ball.style.top = currentY + speed + 'px';
 
     // Переходим к следующей анимации
-    animationFrameId = requestAnimationFrame(moveSquare);
-
-    // Если квадрат достигает края экрана, останавливаем анимацию
-    if ((direction === 1 && currentX >= window.innerWidth - square.offsetWidth) ||
-            (direction === -1 && currentX <= 0)) {
-      cancelAnimationFrame(animationFrameId);
-    }
+    animationFrameId = requestAnimationFrame(moveBall);
   }
 
   // Запуск запроса разрешения по нажатию кнопки
   let startButton = document.getElementById('startButton');
   startButton.addEventListener('click', () => {
     requestAccelerometerPermission();
-    moveSquare(); // Добавляем запуск анимации при нажатии кнопки
+    moveBall(); // Добавляем запуск анимации при нажатии кнопки
   });
 </script>
 
