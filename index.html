@@ -193,27 +193,15 @@
     cancelAnimationFrame(animationId);
   });
 
-  function isInside() {
-    const ball = document.getElementById('ball');
-    const hole = document.getElementById('hole');
-    
-    const ballLeft = ball.offsetLeft;
-    const ballRight = ball.offsetLeft+30;
-    const ballTop = ball.offsetTop;
-    const ballBottom = ball.offsetTop+30
-    document.getElementById('ball-info').innerText = `Ball: left-${ballLeft}; top-${ballTop}; right-${ballRight}; bottom-${ballBottom}`
-    const holeLeft = hole.offsetLeft
-    const holeRight = hole.offsetLeft+40
-    const holeTop = hole.offsetTop;
-    const holeBottom = hole.offsetTop+40
-    document.getElementById('hole-info').innerText = `Hole: left-${holeLeft}; top-${holeTop}; right-${holeRight}; bottom-${holeBottom}`
+  function isInside(ball, hole) {
+    const ballRect = ball.getBoundingClientRect();
+    const holeRect = hole.getBoundingClientRect();
 
-    // Проверяем, находится ли шарик внутри круглой области лунки
     return (
-            ballLeft >= holeLeft &&
-            ballTop >= holeTop &&
-            ballRight <= holeRight &&
-            ballBottom <= holeBottom
+            ballRect.left >= holeRect.left &&
+            ballRect.top >= holeRect.top &&
+            ballRect.right <= holeRect.right &&
+            ballRect.bottom <= holeRect.bottom
     );
   }
 </script>
