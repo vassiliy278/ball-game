@@ -155,14 +155,14 @@
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
-      // Если шарик внутри лунки, увеличиваем время на 1 секунду
+      // Если шарик внутри границ лунки, увеличиваем время на 1 секунду
       timeInsideHole += 1;
       if (timeInsideHole >= 2) {
         // Если время внутри лунки больше 2 секунд, отображаем сообщение о победе
         document.getElementById('win').classList.remove('display-zero');
       }
     } else {
-      // Если шарик не внутри лунки, сбрасываем время
+      // Если шарик не внутри границ лунки, сбрасываем время
       timeInsideHole = 0;
     }
 
@@ -188,6 +188,7 @@
     const cy = parseFloat(circle.style.top) + circle.offsetHeight / 2;
     const r = circle.offsetWidth / 2;
 
+    // Проверяем, находится ли центр шара внутри круглой области лунки
     return Math.sqrt((x - cx) ** 2 + (y - cy) ** 2) < r;
   }
 </script>
