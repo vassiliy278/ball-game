@@ -6,9 +6,26 @@
   <title>Device Tilt</title>
 </head>
 <body>
+<button onclick="requestAccelerometerPermission()">Запросить разрешение на использование акселерометра</button>
 
 <script>
-  window.addEventListener('deviceorientation', handleOrientation);
+  function requestAccelerometerPermission() {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      DeviceMotionEvent.requestPermission()
+              .then(permissionState => {
+                if (permissionState === 'granted') {
+                  window.addEventListener('deviceorientation', handleOrientation);
+                } else {
+                  console.error('Разрешение на использование акселерометра не было предоставлено.');
+                }
+              })
+              .catch(error => {
+                console.error('Ошибка запроса разрешения на использование акселерометра:', error);
+              });
+    } else {
+      console.error('Браузер не поддерживает API запроса разрешения на использование акселерометра.');
+    }
+  }
 
   function handleOrientation(event) {
     // Углы наклона устройства
@@ -24,9 +41,9 @@
 </script>
 
 <div>
-  <p id="alpha"></p>
-  <p id="beta"></p>
-  <p id="gamma"></p>
+  <p id="alpha">0</p>
+  <p id="beta">0</p>
+  <p id="gamma">0</p>
 </div>
 
 </body>
