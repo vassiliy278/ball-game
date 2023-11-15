@@ -51,13 +51,38 @@
     const xFieldLength = window.innerWidth;
     const yFieldLength = window.innerHeight;
 
-    // Пересчитываем координаты шарика в зависимости от углов наклона
     const newX = (event.gamma / 90) * xFieldLength;
     const newY = (event.beta / 90) * yFieldLength;
 
-    // Ограничиваем координаты шарика, чтобы он не уходил за границы экрана
-    ball.style.left = Math.min(xFieldLength - 30, Math.max(0, newX)) + 'px';
-    ball.style.top = Math.min(yFieldLength - 30, Math.max(0, newY)) + 'px';
+    animateBall(ball, {
+      left: Math.min(xFieldLength - 30, Math.max(0, newX)),
+      top: Math.min(yFieldLength - 30, Math.max(0, newY)),
+    });
+  }
+
+  function animateBall(element, target) {
+    const start = {
+      left: parseFloat(element.style.left) || 0,
+      top: parseFloat(element.style.top) || 0,
+    };
+
+    const duration = 500; // Время в миллисекундах
+    const startTime = performance.now();
+
+    function step(currentTime) {
+      const progress = (currentTime - startTime) / duration;
+
+      if (progress < 1) {
+        element.style.left = start.left + progress * (target.left - start.left) + 'px';
+        element.style.top = start.top + progress * (target.top - start.top) + 'px';
+        requestAnimationFrame(step);
+      } else {
+        element.style.left = target.left + 'px';
+        element.style.top = target.top + 'px';
+      }
+    }
+
+    requestAnimationFrame(step);
   }
 </script>
 </body>
