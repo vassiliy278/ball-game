@@ -79,7 +79,10 @@
   let animationId;
   let ballLeft = 50;
   let ballTop = 50;
-
+  document.addEventListener('click', () => {
+    ballLeft = ballLeft*0.9;
+    ballTop = ballTop*0.9
+  })
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
       DeviceMotionEvent.requestPermission()
