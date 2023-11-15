@@ -9,13 +9,19 @@
       position: absolute;
       width: 50px;
       height: 50px;
-      background-color: blue;
+      background-color: red;
+    }
+
+    #startButton {
+      margin-top: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
 <div id="square"></div>
+<button id="startButton">Начать</button>
 
 <script>
   let square = document.getElementById('square');
@@ -61,8 +67,9 @@
     square.style.top = currentY + deltaY + 'px';
   }
 
-  // Запуск запроса разрешения по загрузке страницы
-  document.addEventListener('DOMContentLoaded', requestAccelerometerPermission);
+  // Запуск запроса разрешения по нажатию кнопки
+  let startButton = document.getElementById('startButton');
+  startButton.addEventListener('click', requestAccelerometerPermission);
 </script>
 
 </body>
