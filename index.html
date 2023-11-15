@@ -90,8 +90,8 @@
   const y = document.getElementById('y');
   
   function handleDeviceMotion(event) {
-    const x = event.beta.toFixed(1);
-    const y = event.gamma.toFixed(1);
+    x.innerText = event.beta.toFixed(1);
+    y.innerText = event.gamma.toFixed(1);
     
   }
 </script>
