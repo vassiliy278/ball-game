@@ -94,11 +94,27 @@
   .display-zero {
     display: none !important;
   }
+  .info-bottom {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    bottom: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
 </style>
 </head>
 <body>
 <p id="x">0</p>
 <p id="y">0</p>
+<div class="info-bottom">
+  <p id="ball-info">23</p>
+  <p id="hole-info">23</p>
+</div>
 <p id="win" class="display-zero">You win!</p>
 <div id="play_button">
   <button onclick="requestAccelerometerPermission()">Play</button>
@@ -179,11 +195,12 @@
     const ballRight = ball.offsetLeft+30;
     const ballTop = ball.offsetTop;
     const ballBottom = ball.offsetTop+30
-    
+    document.getElementById('ball-info').innerText = `Ball: left-${ballLeft}; top-${ballTop}; right-${ballRight}; bottom-${ballBottom}`
     const holeLeft = hole.offsetLeft
     const holeRight = hole.offsetLeft+40
     const holeTop = hole.offsetTop;
     const holeBottom = hole.offsetTop+40
+    document.getElementById('hole-info').innerText = `Ball: left-${holeLeft}; top-${holeTop}; right-${holeRight}; bottom-${holeBottom}`
 
     // Проверяем, находится ли шарик внутри круглой области лунки
     return (
