@@ -3,45 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobile Tilt Game</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-    
-    .game-element {
-      width: 20px;
-      height: 20px;
-      background-color: red;
-      position: absolute;
-    }
-  </style>
+  <title>Device Tilt</title>
 </head>
 <body>
-  <div class="game-element"></div>
-  <script src="script.js"></script>
+
+<script>
+  window.addEventListener('deviceorientation', handleOrientation);
+
+  function handleOrientation(event) {
+    // Углы наклона устройства
+    var alpha = event.alpha; // гамма (yaw) в градусах
+    var beta = event.beta;   // тангаж (pitch) в градусах
+    var gamma = event.gamma; // рысканье (roll) в градусах
+
+    // Вывод углов в документ
+    document.getElementById('alpha').innerText = 'Гамма (Yaw): ' + alpha.toFixed(2) + ' градусов';
+    document.getElementById('beta').innerText = 'Тангаж (Pitch): ' + beta.toFixed(2) + ' градусов';
+    document.getElementById('gamma').innerText = 'Рысканье (Roll): ' + gamma.toFixed(2) + ' градусов';
+  }
+</script>
+
+<div>
+  <p id="alpha"></p>
+  <p id="beta"></p>
+  <p id="gamma"></p>
+</div>
+
 </body>
-  <script>
-    let gameElement = document.querySelector('.game-element');
-    window.addEventListener('deviceorientation', handleOrientation);
-    
-    function handleOrientation(event) {
-      let x = event.beta; // In degree in the range [-180,180]
-      let y = event.gamma; // In degree in the range [-90,90]
-    
-      // Normalize values to be in the range [0, 360]
-      x = (x + 180) % 360;
-      y = (y + 90) % 360;
-    
-      // Move the game element based on orientation
-      moveElement(x, y);
-      
-    }
-    
-    function moveElement(x, y) {
-      gameElement.style.transform = `translate(${x}px, ${y}px)`;
-    }
-  </script>
 </html>
