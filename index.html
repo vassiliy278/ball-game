@@ -25,6 +25,9 @@
 
 <script>
   let square = document.getElementById('square');
+  let animationFrameId;
+  let accelerationX = 0;
+  let speed = 2; // Увеличим скорость для более быстрого движения
 
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -49,27 +52,39 @@
   }
 
   function handleDeviceMotion(event) {
-    // Изменение положения прямоугольника в соответствии с ускорением
-    let accelerationX = event.acceleration.x;
-    let accelerationY = event.acceleration.y;
+    // Получаем ускорение
+    accelerationX = event.acceleration.x;
+  }
 
-    // Ограничение скорости движения для плавности
-    let speed = 0.1;
+  function moveSquare() {
+    // Изменяем положение прямоугольника в зависимости от ускорения
     let deltaX = accelerationX * speed;
-    let deltaY = accelerationY * speed;
 
-    // Получение текущего положения
+    // Получаем текущее положение
     let currentX = parseFloat(square.style.left) || 0;
-    let currentY = parseFloat(square.style.top) || 0;
 
-    // Установка нового положения
+    // Определяем направление наклона
+    let direction = deltaX > 0 ? 1 : -1;
+
+    // Устанавливаем новое положение
     square.style.left = currentX + deltaX + 'px';
-    square.style.top = currentY + deltaY + 'px';
+
+    // Переходим к следующей анимации
+    animationFrameId = requestAnimationFrame(moveSquare);
+
+    // Если квадрат достигает края экрана, останавливаем анимацию
+    if ((direction === 1 && currentX >= window.innerWidth - square.offsetWidth) ||
+            (direction === -1 && currentX <= 0)) {
+      cancelAnimationFrame(animationFrameId);
+    }
   }
 
   // Запуск запроса разрешения по нажатию кнопки
   let startButton = document.getElementById('startButton');
-  startButton.addEventListener('click', requestAccelerometerPermission);
+  startButton.addEventListener('click', () => {
+    requestAccelerometerPermission();
+    moveSquare(); // Добавляем запуск анимации при нажатии кнопки
+  });
 </script>
 
 </body>
