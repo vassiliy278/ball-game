@@ -38,7 +38,7 @@
   const z = document.getElementById('z');
   
   function handleDeviceMotion(event) {
-    x.innerText = 'Alpha is '+event.alpha
+    x.innerText = 'Alpha is '+event.alpha.toFixed(2);
     y.innerText = 'Beta is '+event.beta.toFixed(2);
     z.innerText = 'Gamma is '+event.gamma.toFixed(2);
   }
