@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #square {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            background-color: red;
+            position: absolute;
+            transition: transform 0.1s ease-out; /* Добавляем CSS-переход для плавности */
+        }
+    </style>
+</head>
+<body>
+
+<div id="square"></div>
+
+<script>
+    let squareX = window.innerWidth / 2 - 10;
+    let squareY = window.innerHeight / 2 - 10;
+
+    window.addEventListener('deviceorientation', handleOrientation);
+
+    function handleOrientation(event) {
+        const alpha = event.alpha;
+        const beta = event.beta;
+        const gamma = event.gamma;
+
+        // Изменяем положение квадрата плавно
+        requestAnimationFrame(() => {
+            squareX += gamma * 0.1; // Множитель для скорости перемещения
+            squareY += beta * 0.1;
+
+            const square = document.getElementById('square');
+            square.style.transform = `translate(${squareX}px, ${squareY}px)`;
+        });
+    }
+</script>
+
+</body>
+</html>
