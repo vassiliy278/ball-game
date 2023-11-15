@@ -3,33 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Tilt Game</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    #square {
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    
+    .game-element {
       width: 20px;
       height: 20px;
       background-color: red;
       position: absolute;
-      top: 0;
-      left: 0;
     }
   </style>
 </head>
 <body>
-  <div id="square"></div>
-
+  <div class="game-element"></div>
+  <script src="script.js"></script>
+</body>
   <script>
-    const square = document.getElementById('square');
-
+    let gameElement = document.querySelector('.game-element');
     window.addEventListener('deviceorientation', handleOrientation);
-
+    
     function handleOrientation(event) {
-      const x = event.beta; // угол от -180 до 180, наклон по вертикали
-      const y = event.gamma; // угол от -90 до 90, наклон по горизонтали
-
-      // Меняем положение квадрата в зависимости от наклона устройства
-      square.style.top = (y + 90) + 'px';
-      square.style.left = (x + 90) + 'px';
+      let x = event.beta; // In degree in the range [-180,180]
+      let y = event.gamma; // In degree in the range [-90,90]
+    
+      // Normalize values to be in the range [0, 360]
+      x = (x + 180) % 360;
+      y = (y + 90) % 360;
+    
+      // Move the game element based on orientation
+      moveElement(x, y);
+    }
+    
+    function moveElement(x, y) {
+      gameElement.style.transform = `translate(${x}px, ${y}px)`;
     }
   </script>
-</body>
 </html>
