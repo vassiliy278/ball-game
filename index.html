@@ -79,9 +79,9 @@
   let animationId;
   let ballLeft = 50;
   let ballTop = 50;
+  let speed = 3;
   document.addEventListener('click', () => {
-    ballLeft = ballLeft*0.9;
-    ballTop = ballTop*0.9
+    speed = speed*0.9
   })
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -115,8 +115,8 @@
     x.innerText = event.beta.toFixed(1);
     y.innerText = event.gamma.toFixed(1);
 
-    ballLeft += event.gamma / 3; // Измените значение 3 на ваше усмотрение для настройки скорости
-    ballTop += event.beta / 3;
+    ballLeft += event.gamma / speed; // Измените значение 3 на ваше усмотрение для настройки скорости
+    ballTop += event.beta / speed;
 
     // Проверка на выход за границы экрана
     ballLeft = Math.max(0, Math.min(100, ballLeft));
