@@ -12,24 +12,16 @@
       background-color: red;
       border-radius: 50%;
     }
-
-    #startButton {
-      margin-top: 10px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
 
+<button onclick="startAccelerometer()">Начать</button>
 <div id="ball"></div>
-<button id="startButton">Начать</button>
 
 <script>
   let ball = document.getElementById('ball');
-  let animationFrameId;
-  let accelerationX = 0;
-  let speedMultiplier = 0.1; // Коэффициент ускорения
-  let speedLimit = 5; // Максимальная скорость
+  let isAccelerometerStarted = false;
 
   function requestAccelerometerPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -51,18 +43,25 @@
 
   function startListeningToAccelerometer() {
     window.addEventListener('devicemotion', handleDeviceMotion);
+    isAccelerometerStarted = true;
   }
 
   function handleDeviceMotion(event) {
-    accelerationX = event.accelerationIncludingGravity.x;
+    let accelerationX = event.accelerationIncludingGravity.x;
+    let accelerationY = event.accelerationIncludingGravity.y;
+
+    moveBall(accelerationX, accelerationY);
   }
 
-  function moveBall() {
-    let deltaAcceleration = Math.abs(accelerationX);
-    let speed = deltaAcceleration * speedMultiplier;
+  function moveBall(accelerationX, accelerationY) {
+    if (!isAccelerometerStarted) return;
+
+    let deltaAccelerationX = Math.abs(accelerationX);
+    let deltaAccelerationY = Math.abs(accelerationY);
 
     // Ограничиваем максимальную скорость
-    speed = Math.min(speed, speedLimit);
+    deltaAccelerationX = Math.min(deltaAccelerationX, 10); // 10 - максимальная скорость по оси X
+    deltaAccelerationY = Math.min(deltaAccelerationY, 10); // 10 - максимальная скорость по оси Y
 
     let currentY = parseFloat(ball.style.top) || 0;
     let currentX = parseFloat(ball.style.left) || 0;
@@ -71,24 +70,16 @@
     let screenWidth = window.innerWidth;
     let screenHeight = window.innerHeight;
 
-    // Останавливаем шарик при достижении края экрана
-    if (currentY >= 0 && currentY <= screenHeight - ball.clientHeight) {
-      ball.style.top = currentY + speed + 'px';
-    }
+    // Двигаем шарик в зависимости от наклона
+    ball.style.top = currentY + deltaAccelerationY + 'px';
+    ball.style.left = currentX + deltaAccelerationX + 'px';
 
-    // Ограничиваем движение шарика по горизонтали
-    if (currentX >= 0 && currentX <= screenWidth - ball.clientWidth) {
-      ball.style.left = currentX + accelerationX + 'px';
-    }
-
-    animationFrameId = requestAnimationFrame(moveBall);
+    requestAnimationFrame(() => moveBall(accelerationX, accelerationY));
   }
 
-  let startButton = document.getElementById('startButton');
-  startButton.addEventListener('click', () => {
+  function startAccelerometer() {
     requestAccelerometerPermission();
-    moveBall();
-  });
+  }
 </script>
 
 </body>
