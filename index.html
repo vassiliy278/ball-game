@@ -1,141 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Request Accelerometer Permission</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
+  <title>Request Accelerometer Permission</title>  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  html {
+    height: 100%;
+  }
+  body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+  }
+  #x {
+    position: absolute;
+    top: 50%;
+    left: -5px;
+    transform: rotate(-90deg);
+  }
+  #y {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+  }
+  #x, #y {
+    font-size: 11px;
+    color: #888;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  #play_button {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+    background-color: #223;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #play_button button {
+    padding: 15px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    background-color: #efc06e;
+    color: #4e25e3;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  #ball-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  #ball {
+    width: 100%;
+    height: 100%;
+    background-color: #df9ef6;
+    border: 1px solid grey;
+  }
+  #number-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #number {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    transform-origin: center bottom;
+    animation: rotateAndSkew 1s linear infinite;
+  }
+  @keyframes rotateAndSkew {
+    0% {
+      transform: rotate(0deg) skew(0deg);
     }
-
-    html, body {
-      height: 100%;
+    100% {
+      transform: rotate(360deg) skew(45deg);
     }
-
-    body {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      background-color: #eee;
-    }
-
-    #x {
-      position: absolute;
-      top: 50%;
-      left: -5px;
-      transform: rotate(-90deg);
-    }
-
-    #y {
-      position: absolute;
-      left: 50%;
-      top: 10px;
-      transform: translateX(-50%);
-    }
-
-    #x,
-    #y {
-      font-size: 11px;
-      color: #888;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    #play_button {
-      width: 100%;
-      height: 100vh;
-      position: relative;
-      z-index: 2;
-      background-color: #223;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #play_button button {
-      padding: 15px 28px;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      background-color: #efc06e;
-      color: #4e25e3;
-      font-weight: 700;
-      letter-spacing: 1px;
-      cursor: pointer;
-    }
-
-    #ball {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background-color: #df9ef6;
-      border: 1px solid grey;
-      overflow: hidden;
-    }
-
-    #number {
-      font-size: 14px;
-      color: #fff;
-      position: absolute;
-      transform-origin: bottom;
-      white-space: nowrap;
-    }
-
-    #hole {
-      position: absolute;
-      left: 150px;
-      top: 80px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #000;
-    }
-
-    #win {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 2;
-      background-color: #555;
-      color: #ccc;
-      font-size: 42px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .display-zero {
-      display: none !important;
-    }
-
-    .info-bottom {
-      position: absolute;
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      bottom: 20px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-  </style>
+  }
+  #hole {
+    position: absolute;
+    left: 150px;
+    top: 80px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #000;
+  }
+  #win {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 2;
+    background-color: #555;
+    color: #ccc;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .display-zero {
+    display: none !important;
+  }
+  .info-bottom {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    bottom: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+</style>
 </head>
-
 <body>
 <p id="x">0</p>
 <p id="y">0</p>
@@ -148,8 +151,11 @@
   <button onclick="requestAccelerometerPermission()">Play</button>
 </div>
 <div id="hole"></div>
-<div id="ball">
-  <p id="number">8</p>
+<div id="ball-container">
+  <div id="ball"></div>
+  <div id="number-container">
+    <div id="number">8</div>
+  </div>
 </div>
 <script>
   let animationId;
@@ -157,7 +163,6 @@
   let ballTop = 50;
   let speed = 3;
   let winTimeout;
-  let rotation = 0;
 
   document.addEventListener('click', () => {
     speed = speed * 1.1;
@@ -212,13 +217,6 @@
     // Установка новых координат для шара
     ball.style.left = `${ballLeft}%`;
     ball.style.top = `${ballTop}%`;
-
-    // Определение угла наклона устройства
-    const tiltX = event.accelerationIncludingGravity.x / 10;
-    const tiltY = event.accelerationIncludingGravity.y / 10;
-
-    // Установка вращения и искажения цифры на шарике
-    document.getElementById('number').style.transform = `rotate(${tiltX}deg) skew(${tiltY}deg)`;
   }
 
   function animate() {
@@ -244,5 +242,4 @@
   }
 </script>
 </body>
-
 </html>
