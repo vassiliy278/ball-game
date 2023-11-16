@@ -195,18 +195,16 @@
     x.innerText = event.accelerationIncludingGravity.x.toFixed(1);
     y.innerText = event.accelerationIncludingGravity.y.toFixed(1);
 
-    // Используем skew для искажения цифры в зависимости от движения шара
-    const skewX = event.accelerationIncludingGravity.x / 10;
-    const skewY = event.accelerationIncludingGravity.y / 10;
-    document.getElementById('number').style.transform = `skew(${skewX}deg, ${skewY}deg)`;
-
+    // Проверка на выход за границы экрана
+    ballLeft = Math.max(0, Math.min(100, ballLeft + event.accelerationIncludingGravity.x / speed));
+    ballTop = Math.max(0, Math.min(100, ballTop - event.accelerationIncludingGravity.y / speed));
 
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
     if (isInside(ball, hole)) {
       winTimeout = setTimeout(() => {
         document.getElementById('win').classList.remove('display-zero');
-      }, 2000);
+      }, 2000)
     } else {
       clearTimeout(winTimeout);
     }
@@ -214,6 +212,11 @@
     // Установка новых координат для шара
     ball.style.left = `${ballLeft}%`;
     ball.style.top = `${ballTop}%`;
+
+    // Установка вращения цифры на шарике
+    const rotation = event.rotationRate.beta || 0;
+    const skewX = rotation / 3; // Измените значение по необходимости
+    document.getElementById('number').style.transform = `rotate(${rotation}deg) skew(${skewX}deg)`;
   }
 
   function animate() {
