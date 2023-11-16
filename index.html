@@ -86,6 +86,7 @@
     #number {
       font-size: 14px;
       color: #fff;
+      position: absolute;
     }
 
     #hole {
@@ -193,10 +194,6 @@
 
     x.innerText = event.accelerationIncludingGravity.x.toFixed(1);
     y.innerText = event.accelerationIncludingGravity.y.toFixed(1);
-
-    // Проверка на выход за границы экрана
-    ballLeft = Math.max(0, Math.min(100, ballLeft + event.accelerationIncludingGravity.x / speed));
-    ballTop = Math.max(0, Math.min(100, ballTop - event.accelerationIncludingGravity.y / speed));
 
     // Поворот числа в зависимости от движения шара
     rotation += event.accelerationIncludingGravity.x / 10;
