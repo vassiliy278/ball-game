@@ -47,7 +47,7 @@
 
     #play_button {
       width: 100%;
-      height: 100vh;
+      height: 100%;
       position: relative;
       z-index: 2;
       background-color: #223;
@@ -78,15 +78,14 @@
       border-radius: 50%;
       background-color: #df9ef6;
       border: 1px solid grey;
-      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     #number {
       font-size: 14px;
       color: #fff;
-      position: absolute;
-      transform-origin: bottom;
-      white-space: nowrap;
     }
 
     #hole {
@@ -195,11 +194,13 @@
     x.innerText = event.accelerationIncludingGravity.x.toFixed(1);
     y.innerText = event.accelerationIncludingGravity.y.toFixed(1);
 
-    // Используем skew для искажения цифры в зависимости от движения шара
-    const skewX = event.accelerationIncludingGravity.x / 10;
-    const skewY = event.accelerationIncludingGravity.y / 10;
-    document.getElementById('number').style.transform = `skew(${skewX}deg, ${skewY}deg)`;
+    // Проверка на выход за границы экрана
+    ballLeft = Math.max(0, Math.min(100, ballLeft + event.accelerationIncludingGravity.x / speed));
+    ballTop = Math.max(0, Math.min(100, ballTop - event.accelerationIncludingGravity.y / speed));
 
+    // Поворот числа в зависимости от движения шара
+    rotation += event.accelerationIncludingGravity.x / 10;
+    document.getElementById('number').style.transform = `rotate(${rotation}deg)`;
 
     const ball = document.getElementById('ball');
     const hole = document.getElementById('hole');
@@ -239,5 +240,4 @@
   }
 </script>
 </body>
-
 </html>
