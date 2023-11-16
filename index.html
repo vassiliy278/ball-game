@@ -213,10 +213,12 @@
     ball.style.left = `${ballLeft}%`;
     ball.style.top = `${ballTop}%`;
 
-    // Установка вращения цифры на шарике
-    const rotation = event.rotationRate.beta || 0;
-    const skewX = rotation / 3; // Измените значение по необходимости
-    document.getElementById('number').style.transform = `rotate(${rotation}deg) skew(${skewX}deg)`;
+    // Определение угла наклона устройства
+    const tiltX = event.accelerationIncludingGravity.x / 10;
+    const tiltY = event.accelerationIncludingGravity.y / 10;
+
+    // Установка вращения и искажения цифры на шарике
+    document.getElementById('number').style.transform = `rotate(${tiltX}deg) skew(${tiltY}deg)`;
   }
 
   function animate() {
